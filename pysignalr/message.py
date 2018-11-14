@@ -1,9 +1,17 @@
+from typing import Union
+
+
 class HubMessage:
     pass
 
 
 class PingMessage(HubMessage):
     pass
+
+
+class CloseMessage(HubMessage):
+    def __init__(self, error: Union[None, str] = None):
+        self.error = error
 
 
 class HubInvocationMessage(HubMessage):

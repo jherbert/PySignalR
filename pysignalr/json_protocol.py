@@ -3,7 +3,7 @@
 import json
 
 from .common import *
-from .message import HubMessage, InvocationMessage, PingMessage
+from .message import CloseMessage, HubMessage, InvocationMessage, PingMessage
 
 __all__ = ['JsonProtocol']
 
@@ -33,6 +33,9 @@ class JsonProtocol:
             hub_message = InvocationMessage(invocationid, target, arguments)
         elif message_type == PING_MESSAGE_TYPE:
             hub_message = PingMessage()
+        elif message_type == CLOSE_MESSAGE_TYPE:
+            error = message.get('error', None)
+            hub_message = CloseMessage(error)
 
         return hub_message
 

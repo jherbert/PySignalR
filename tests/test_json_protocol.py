@@ -1,6 +1,6 @@
 import pytest
 
-from pysignalr.message import InvocationMessage, PingMessage
+from pysignalr.message import CloseMessage, InvocationMessage, PingMessage
 from pysignalr.json_protocol import JsonProtocol
 
 
@@ -54,3 +54,25 @@ def test_ping_message():
     actual = json_protocol.parse_message(json)
 
     assert isinstance(actual, PingMessage)
+
+
+@pytest.mark.parametrize(
+    "test_input,expected",
+    [
+        # CloseMessage
+        ('{"type":7}', CloseMessage()),
+
+        # CloseMessage_HasError
+        ('{"type":7,"error":"Error!"}', CloseMessage('Error!')),
+
+        # CloseMessage_HasErrorEmptyString
+        ('{"type":7,"error":""}', CloseMessage(''))
+    ]
+)
+def test_close_message(test_input, expected):
+    json_protocol = JsonProtocol()
+
+    actual = json_protocol.parse_message(test_input)
+
+    assert isinstance(actual, CloseMessage)
+    assert actual.error == expected.error
