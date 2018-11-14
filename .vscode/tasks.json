@@ -1,0 +1,54 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run Client and Server",
+            "dependsOn": [
+                ".NET Server run",
+                ".NET Client run"
+            ]
+        },
+        {
+            "label": ".NET Client build",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/example/client_cs/CSharp.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": ".NET Server build",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/example/server/Server.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": ".NET Server run",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "run",
+                "--project",
+                "${workspaceFolder}/example/server/Server.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": ".NET Client run",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "run",
+                "--project",
+                "${workspaceFolder}/example/client_cs/CSharp.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        }
+    ]
+}
