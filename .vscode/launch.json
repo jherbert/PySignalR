@@ -9,12 +9,17 @@
             "type": "python",
             "request": "launch",
             "program": "${file}",
+            "pythonPath": "python",
             "console": "integratedTerminal"
         },
         {
             "name": "Python: example.py",
             "type": "python",
             "request": "launch",
+            // On Windows and Python extension 2018.10.1 relying on settings.json activates the
+            // virtual environment correctly but does a fully quailifed path to python.exe which
+            // seems to make it run outside the context of the virtual environment
+            "pythonPath": "python",
             "program": "${workspaceFolder}/example/example.py",
             "console": "integratedTerminal"
         }
