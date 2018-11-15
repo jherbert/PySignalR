@@ -77,13 +77,14 @@ class HubConnection(object):
 
     async def process_incoming(self, message):
         logger.debug(f'S-C-> {message}')
-        hub_message = self.hub_protocol.parse_message(message)
+        for m in message.split(JSON_RECORD_SEPARATOR):
+            hub_message = self.hub_protocol.parse_message(m)
 
-        if type(hub_message) is InvocationMessage and hub_message.target in self.handlers:
-            arguments = ','.join(hub_message.arguments)
-            logger.debug(f'Raising event {hub_message.target} with arguments: {arguments}')
+            if type(hub_message) is InvocationMessage and hub_message.target in self.handlers:
+                arguments = ','.join(hub_message.arguments)
+                logger.debug(f'Raising event {hub_message.target} with arguments: {arguments}')
 
-            self.handlers[hub_message.target].fire(*hub_message.arguments)
+                self.handlers[hub_message.target].fire(*hub_message.arguments)
 
     async def incoming_message_handler(self):
         if self.socket is None:

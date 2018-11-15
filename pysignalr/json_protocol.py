@@ -12,11 +12,8 @@ class JsonProtocol:
     pass
 
     def parse_message(self, raw_message: str) -> HubMessage:
-        if raw_message is None:
+        if not raw_message:
             return
-
-        # JSON payloads are terminated 0x1e character
-        raw_message = raw_message.replace(JSON_RECORD_SEPARATOR, '')
 
         message = json.loads(raw_message)
 
@@ -40,4 +37,10 @@ class JsonProtocol:
         return hub_message
 
     def write_message(self, message: HubMessage) -> str:
-        return ''
+
+        json_message = ''
+
+        if isinstance(message, InvocationMessage):
+            json_message = json.dumps(message.__dict__) + JSON_RECORD_SEPARATOR
+
+        return json_message
